@@ -1,0 +1,49 @@
+/*
+Given a string, your task is to calculate the number of different strings that can be created using its characters.
+
+Input
+
+The only input line has a string of length n. Each character is between a–z.
+
+Output
+
+Print the number of different strings modulo 109+7.
+
+Constraints
+1≤n≤106
+Example
+
+Input:
+aabac
+
+Output:
+20
+*/
+#include <iostream>
+using namespace std;
+#define MOD 1000000007
+#define ll long long
+int choose[1000001]; //string length choose __
+int main(){
+  string inp;
+  cin >> inp;
+  choose[0] = 1;
+  for(int i =1; i<= N; i++){
+    choose[i] = (((ll)choose[i-1]*(inp.size()-i-1))/i) % MOD;
+  }
+  int pref[1000001];
+  pref[0] = choose[0];
+  for(int i =1; i <=N; i++) pref[i] = ((ll)choose[i]+pref[i-1])%MOD;
+  map<char, int> count;
+  for(char c : inp) map[c]++;
+  int numchar = 0;
+  int over = 0;
+  for(pair<char, int> p : count){
+    numchar++;
+    over = ((ll)over+pref[N]-pref[p.second]+MOD)%MOD;
+  }
+  int pow = 1;
+  for(int i = 0; i < inp.size(); i++) pow = ((ll)pow*numchar)%MOD;
+  cout << ((ll)pow+MOD-over)%MOD;
+}
+  
