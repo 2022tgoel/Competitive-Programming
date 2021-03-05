@@ -1,0 +1,45 @@
+import java.io.*;
+import java.util.*;
+
+class cowjump {
+  public static void main (String [] args) throws IOException {
+    // Use BufferedReader rather than RandomAccessFile; it's much faster
+    BufferedReader f = new BufferedReader(new FileReader("cowjump.in"));
+                                                  // input file name goes above
+    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("test.out")));
+    
+    int pointNum = Float.parseFloat(f.readLine());
+    
+    float[][] points = new float [pointNum][4];
+    // Use StringTokenizer vs. readLine/split -- lots faster
+   for (int i = 0; i<pointNum; i++){
+       StringTokenizer st = new StringTokenizer(f.readLine());
+   						  // Get line, break into tokens
+       points[i][0] = Float.parseFloat(st.nextToken());    // first integer
+       points[i][1] = Float.parseFloat(st.nextToken());    // second integer
+       points[i][2] = Float.parseFloat(st.nextToken());    
+       points[i][3] = Float.parseFloat(st.nextToken()); 
+    }                              // close the output file
+    System.out.println(findInter(points[0], points[1]));
+  }
+  public static boolean findInter(float[] p1, float[] p2){
+      float A1 = p1[3]-p1[1];
+      float B1 = p1[0]-p1[2];
+      float C1 = A1*p1[0]+B1*p2[1];
+      float A2 = p2[3]-p2[1];
+      float B2 = p2[0]-p2[2];
+      float C2 = A2*p2[0]+B2*p2[1];
+      float det = A1*B2 - A2*B1;
+      if(det == 0){
+         return false;
+      }else{
+         float x = (B2*C1 - B1*C2)/det;
+         float y = (A1*C2 - A2*C1)/det;
+         if (min(p1[0], p1[2])<x<max(p1[0], p1[2]) && min(p2[0], p2[2])<x<max(p2[0], p2[2]) &&min(p2[1], p2[3])<y<max(p2[1], p2[3])&& min(p1[1], p1[3])<y<max(p1[1], p1[3]))
+      {
+         return true;
+      }
+      }
+      
+  }
+}
