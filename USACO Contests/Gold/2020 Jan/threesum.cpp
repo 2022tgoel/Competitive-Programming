@@ -27,53 +27,63 @@ SAMPLE OUTPUT:
 For the first query, the possible triples are (A1,A2,A5) and (A2,A3,A4).
 */
 #include <bits/stdc++.h>
+#define pii pair<int, int>
+#define s second
+#define f first
 using namespace std;
-const int N = 5e4+40;
-const int MXQ = 1e5+10;
-int N, Q, A[MXN], qry[MXQ][2], order[MXQ];
-map<int, set<int>> sums;
-struct Compare(){
-	bool operator()(int a, int b){
-		if (qry[a][1] < qry[b][1]) return true;
-		if (qry[a][1] == qry[b][1]) return qry[a][0] < qry[b][0];
-		else return false;
+const int MXN = 5e4+1;
+int N, Q;
+long bit[MXN];
+int A[MXN];
+const int MXQ = 1e5;
+pair<pii, int> q[MXQ];
+unordered_map<int, vector<int>> mp;
+long ans[MXQ];
+void upd(int ind){
+	while (ind<=N){
+		bit[ind]+=1;
+		ind+=(ind&-ind);
 	}
-} compare;
-
-int calc(int bound; int val){
-	//calculate number of 
-
 }
-
+long qry(int ind){
+	long ans = 0;
+	while (ind>0){
+		ans+=bit[ind];
+		ind-=(ind&-ind);
+	}
+	return ans;
+}
 int main(){
-	cin >> N >> Q;
-	for (int i = 0; i < N;i++){
+	ifstream cin("threesum.in");
+	ofstream cout("threesum.out");
+	cin >> N >> Q; 
+	for (int i = 1; i <=N; i++) {
 		cin >> A[i];
+		mp[A[i]].push_back(i);
 	}
 	for (int i = 0; i < Q; i++){
-		cin >> qry[i][0] >> qry[i][1];
-		qry[i][0]--;
-		qry[i][1]--;
-		order[i] = i;
+		cin >> q[i].f.s >> q[i].f.f; q[i].s = i;
 	}
-	sort(order, order+Q, compare);
-	int lastp = 0;
+	sort(q, q+Q);
+	int lend = 0;
 	for (int i = 0; i < Q; i++){
-		int q = order[i];
-		int start = qry[q][0];
-		int end = qry[q][1];
-		//calculate new sum pairs
-		for (int i = 0; i <= end;i++){
-			for (int j = max(i+1, lastp); j <=end; j++){
-				int sum = A[i] + A[j];
-				sums[sum].insert(i); // left point of pair
+		int end = q[i].f.f;
+		for (int z= lend+1; z <=end; z++){
+			for (int y = 1; y < z; y++){
+				int opp = -1*A[y] + -1*A[z];
+				for (int x : mp[opp]){
+					if (x>=y) break;
+					upd(x);
+					//cout << z << ' ' << x << endl;
+				}
 			}
 		}
-		lastp = end+1;
-		//
-		int ans = 0;
-		for (int i = start; i <=end; i++){
-			ans+=calc(i, -1*A[i]);
-		}
+		lend = end;
+		//cout << end << ' ' << qry(end) << ' ' << q[i].f.s-1 << ' ' << qry(q[i].f.s-1) << endl;
+		//assert((qry(end) - qry(q[i].f.s-1))%2 == 0);
+		ans[q[i].s] = (qry(end) - qry(q[i].f.s-1));
+	}
+	for (int i = 0; i < Q; i++){
+		cout << ans[i] << endl;
 	}
 }

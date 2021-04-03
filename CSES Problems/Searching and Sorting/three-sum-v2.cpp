@@ -1,4 +1,4 @@
-//faster - gets AC
+//faster - gets accepted
 #include <bits/stdc++.h>
 using namespace std;
 #define f first
@@ -13,7 +13,7 @@ int main(){
 	}
 	sort(a, a+N);
 	for (int x = 0; x < N; x++){
-		int y = 0; int z =N-1;
+		int y = x+1; int z =N-1;
 		while (y<z){
 			if (a[x].f + a[y].f + a[z].f == X && y!=x && z!=x){
 				cout << a[x].s << ' ' << a[y].s <<  ' ' <<  a[z].s << endl; return 0;

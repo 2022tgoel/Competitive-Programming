@@ -1,5 +1,5 @@
 /*
- * ach of Farmer John's N cows (1≤N≤2⋅105) has a favorite color. The cows are conveniently labeled 1…N (as always), and each color can be represented by an integer in the range 1…N.
+ * Each of Farmer John's N cows (1≤N≤2⋅105) has a favorite color. The cows are conveniently labeled 1…N (as always), and each color can be represented by an integer in the range 1…N.
 There exist M pairs of cows (a,b) such that cow b admires cow a (1≤M≤2⋅105). It is possible that a=b, in which case a cow admires herself. For any color c, if cows x and y both admire a cow with favorite color c, then x and y share the same favorite color.
 
 Given this information, determine an assignment of cows to favorite colors such that the number of distinct favorite colors among all cows is maximized. As there are multiple assignments that satisfy this property, output the lexicographically smallest one (meaning that you should take the assignment that minimizes the colors assigned to cows 1…N in that order).
