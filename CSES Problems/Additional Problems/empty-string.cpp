@@ -26,34 +26,45 @@ Output:
 
 #include <bits/stdc++.h>
 using namespace std;
+const int MXN = 501;
 const int MOD = 1e9+7;
-int dp[510][510];
-void add(int i, int j, int x){
-	dp[i][j] = ((long long)dp[i][j] + x)%MOD;
+int dp[MXN][MXN], choose[MXN][MXN];
+
+int add(int x, int y){
+	return ((long long)x + y)%MOD;
 }
+int mul(int x, int y){
+	return ((long long)x * y)%MOD;
+}
+
 int main(){
-	string s;
-	cin >> s;
-	int N = s.size();
-	for (int i = 0; i < N-1; i++){
+	string s; cin >> s;
+	int n = s.length();
+	choose[0][0] = 1;
+	for (int i = 0; i < n; i++){
+		for (int j =0; j <=i; j++){
+			// i choose j
+			if (j-1 >= 0) choose[i][j] = choose[i-1][j-1];
+			if (j < i) choose[i][j] = add(choose[i][j], choose[i-1][j]);
+		}
+	}
+	for (int i = 0; i < n-1; i++){
 		if (s[i] == s[i+1]) dp[i][i+1] = 1;
 	}
-	for (int k = 3; k<N; k+=2){
-		for (int i = 0; i < N-k; i++){
+	for (int k = 3; k<n; k+=2){
+		for (int i = 0; i < n-k; i++){
 			int j = i+k;
-			//case 1
-			if (s[i] == s[j]){
-				add(i, j, dp[i+1][j-1]);
-			}
-			//case 2
-			if (s[i] == s[i+1]){
-				add(i, j, ((long long)dp[i+2][j]*((k+1)/2))%MOD);
-			}
-			//case 3
-			if (s[j] == s[j-1]){
-				add(i, j, ((long long)dp[i][j-2]*((k+1)/2))%MOD);
+			if (s[i] == s[j]) dp[i][j] = dp[i+1][j-1];
+			for (int l = i+1; l<j; l+=2){
+				if (s[i] == s[l]){
+					// length is (k+1)/2
+					int numl = ((i+1==l) ? 1 : dp[i+1][l-1]);
+					int numr = dp[l+1][j];
+					//cout << i << ' ' << l << ' ' << numl << ' ' << numr << endl;
+					dp[i][j] = add(dp[i][j], mul(mul(choose[(k+1)/2][(l-i+1)/2], numl),numr));
+				}
 			}
 		}
 	}
-	cout << dp[0][N-1];
+	cout << dp[0][n-1];
 }
