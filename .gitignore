@@ -1,7 +1,9 @@
-Camp/**
-USACO_Contests/EGOI_Selection_Contest/**
+Camp
+USACO_Contests/EGOI_Selection_Contest
 CP\ Guides/ae_draft.pdf
-alGIRLithm/**
+alGIRLithm
+.vscode
+peda-session*
 # Prerequisites
 *.d
 
@@ -32,4 +34,5 @@ alGIRLithm/**
 
 # Executables
 *.exe
+*.out
 *.app
